@@ -13,6 +13,13 @@ class LiarsDice
 		Array.new(num) { sides.sample }
 	end
 
+	def reroll(values=[])
+		values.each do |value|
+			rerolled = @sides.find_index(value)
+			@sides[rerolled] = roll(1)[0] if rerolled
+		end
+	end
+
 	def tier
 		@sides.map {|i| @sides.grep(i).length }.max
 	end

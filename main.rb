@@ -9,3 +9,7 @@ puts b.sides.join ','
 puts a.tier, b.tier
 
 puts a > b
+
+a.reroll [:ace]
+
+puts a.sides.join ','
