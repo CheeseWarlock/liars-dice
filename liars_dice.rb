@@ -36,33 +36,31 @@ class LiarsDice
 	end
 
 	def value
-		tier = self.freqs[0]
-		subtier = self.freqs[1]
-		case tier[1]
+		freqs = self.freqs
+		first = freqs[0][0]
+		second = freqs[1][0]
+		high = [:high, freqs.select { |i| i[1] == 1 }[0][0]]
+		case freqs[0][1]
 			when 5
-				:five_of
+				[[:five_of, first]]
 			when 4
-				:four_of
+				[[:four_of, first], high]
 			when 3
-				subtier == 2 ? :full_house : :three_of
+				freqs[1][1] == 2 ? [[:full_house, first, second]] : [[:three_of, first], high]
 			when 2
-				subtier == 2 ? :two_pair : :pair
+				freqs[1][1] == 2 ? [[:two_pair, first, second], high] : [[:pair, first], high]
 			when 1
-				:high
+				[high]
 		end
 	end
 
 	def to_s
-		self.freqs.map do |i|
-			i[1].to_s + " " + i[0].to_s
+		self.value.map do |i|
+			i[0].to_s + " " + (i[1..-1].join " and ")
 		end.join ", "
 	end
 
 	def >(other)
-		self.tier > other.tier
-	end
-
-	def <(other)
-		self.tier < other.tier
+		self.freqs[0][1] > other.freqs[0][1]
 	end
 end
