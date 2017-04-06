@@ -24,6 +24,25 @@ class LiarsDice
 		@sides.map {|i| @sides.grep(i).length }.max
 	end
 
+	def subtier
+		@sides.uniq.map {|i| @sides.grep(i).length }.sort[-2]
+	end
+
+	def value
+		case self.tier
+			when 5
+				:five_of
+			when 4
+				:four_of
+			when 3
+				subtier == 2 ? :full_house : :three_of
+			when 2
+				subtier == 2 ? :two_pair : :pair
+			else
+				:high
+		end
+	end
+
 	def >(other)
 		self.tier > other.tier
 	end
