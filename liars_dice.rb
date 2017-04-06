@@ -61,6 +61,18 @@ class LiarsDice
 	end
 
 	def >(other)
-		self.freqs[0][1] > other.freqs[0][1]
+		a = self.value
+		b = other.value
+		tier_diff = TIERS.find_index(a[0][0]) <=> TIERS.find_index(b[0][0])
+		return tier_diff > 0 if tier_diff != 0
+		side_diff = SIDES.find_index(a[0][1]) <=> SIDES.find_index(b[0][1])
+		return tier_diff > 0 if side_diff != 0
+		if a[0][0] == :full_house || a[0][0] == :two_pair
+			side_diff = SIDES.find_index(a[0][2]) <=> SIDES.find_index(b[0][2])
+			return tier_diff > 0 if side_diff != 0
+		end
+		side_diff = SIDES.find_index(a[1][1]) <=> SIDES.find_index(b[1][1])
+		return tier_diff > 0 if side_diff != 0
+		false
 	end
 end
